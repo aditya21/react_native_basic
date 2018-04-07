@@ -3,7 +3,7 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import rootReducer from './reducers';
 import { createLogger } from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { autoRehydrate, persistStore, persistReducer } from 'redux-persist';
+import { autoRehydrate, persistStore, persistReducer, persistCombineReducers } from 'redux-persist';
 
 const middlewares = [];
 
@@ -17,5 +17,9 @@ const persistConfig = {
 };
 const persistReducer1 = persistReducer(persistConfig, rootReducer);
 
-export const store = createStore(persistReducer1);
-export const persistor = persistStore(store);
+export default function configureStore(){
+    const store = createStore(persistReducer1);
+    const persistor = persistStore(store);
+
+    return { persistor, store }
+}
